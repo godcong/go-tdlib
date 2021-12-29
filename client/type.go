@@ -19205,11 +19205,11 @@ func (chatEventMemberPromoted *ChatEventMemberPromoted) UnmarshalJSON(data []byt
 	return nil
 }
 
-// A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed
+//ChatEventMemberRestricted is a chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed
 type ChatEventMemberRestricted struct {
 	meta
-	// Chat member user identifier
-	UserID int64 `json:"user_id"`
+	// Chat member identifier
+	MemberID MessageSender `json:"member_id"`
 	// Previous status of the chat member
 	OldStatus ChatMemberStatus `json:"old_status"`
 	// New status of the chat member
@@ -19238,7 +19238,7 @@ func (*ChatEventMemberRestricted) ChatEventActionType() string {
 
 func (chatEventMemberRestricted *ChatEventMemberRestricted) UnmarshalJSON(data []byte) error {
 	var tmp struct {
-		UserID    int64           `json:"user_id"`
+		MemberID  json.RawMessage `json:"member_id"`
 		OldStatus json.RawMessage `json:"old_status"`
 		NewStatus json.RawMessage `json:"new_status"`
 	}
@@ -19248,7 +19248,8 @@ func (chatEventMemberRestricted *ChatEventMemberRestricted) UnmarshalJSON(data [
 		return err
 	}
 
-	chatEventMemberRestricted.UserID = tmp.UserID
+	fieldMemberID, _ := UnmarshalMessageSender(tmp.MemberID)
+	chatEventMemberRestricted.MemberID = fieldMemberID
 
 	fieldOldStatus, _ := UnmarshalChatMemberStatus(tmp.OldStatus)
 	chatEventMemberRestricted.OldStatus = fieldOldStatus

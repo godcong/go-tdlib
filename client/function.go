@@ -5107,7 +5107,7 @@ func (client *Client) AddChatMembers(req *AddChatMembersRequest) (*Ok, error) {
 type SetChatMemberStatusRequest struct {
 	// Chat identifier
 	ChatID int64 `json:"chat_id"`
-	// User identifier
+	// Member identifier
 	MemberID MessageSender `json:"member_id"`
 	// The new status of the member in the chat
 	Status ChatMemberStatus `json:"status"`
@@ -5205,19 +5205,19 @@ func (client *Client) TransferChatOwnership(req *TransferChatOwnershipRequest) (
 type GetChatMemberRequest struct {
 	// Chat identifier
 	ChatID int64 `json:"chat_id"`
-	// User identifier
-	UserID int64 `json:"user_id"`
+	// Member identifier
+	MemberID MessageSender `json:"member_id"`
 }
 
-// Returns information about a single member of a chat
+//GetChatMember returns information about a single member of a chat
 func (client *Client) GetChatMember(req *GetChatMemberRequest) (*ChatMember, error) {
 	result, err := client.Send(Request{
 		meta: meta{
 			Type: "getChatMember",
 		},
 		Data: map[string]interface{}{
-			"chat_id": req.ChatID,
-			"user_id": req.UserID,
+			"chat_id":   req.ChatID,
+			"member_id": req.MemberID,
 		},
 	})
 	if err != nil {
