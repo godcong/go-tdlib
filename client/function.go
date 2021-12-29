@@ -5108,7 +5108,7 @@ type SetChatMemberStatusRequest struct {
 	// Chat identifier
 	ChatID int64 `json:"chat_id"`
 	// User identifier
-	UserID int64 `json:"user_id"`
+	MemberID MessageSender `json:"member_id"`
 	// The new status of the member in the chat
 	Status ChatMemberStatus `json:"status"`
 }
@@ -5120,9 +5120,9 @@ func (client *Client) SetChatMemberStatus(req *SetChatMemberStatusRequest) (*Ok,
 			Type: "setChatMemberStatus",
 		},
 		Data: map[string]interface{}{
-			"chat_id": req.ChatID,
-			"user_id": req.UserID,
-			"status":  req.Status,
+			"chat_id":   req.ChatID,
+			"member_id": req.MemberID,
+			"status":    req.Status,
 		},
 	})
 	if err != nil {
